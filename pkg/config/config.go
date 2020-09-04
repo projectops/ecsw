@@ -10,9 +10,9 @@ import (
 
 const (
 	// HOMEPATH - application config file
-	HOMEPATH = ""
+	HOMEPATH = "/etc/ecsw/ecsw.yml"
 	// APPHOME - folder with workspaces
-	APPHOME = ""
+	APPHOME = "/etc/ecsw/"
 )
 
 // Workspace - workspace configuration
