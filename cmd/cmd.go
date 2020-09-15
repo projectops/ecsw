@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/projectops/ecsw/cmd/scalecmd"
+
 	"github.com/projectops/ecsw/cmd/listcmd"
 
 	"github.com/projectops/ecsw/cmd/initcmd"
@@ -61,10 +63,20 @@ func Root(args []string) error {
 				return cmd.Run()
 			}
 		}
-
 	case "list":
 		cmds := []Runner{
 			listcmd.NewListCMD(),
+		}
+
+		for _, cmd := range cmds {
+			if cmd.Name() == subcommand {
+				cmd.Init(os.Args[2:])
+				return cmd.Run()
+			}
+		}
+	case "scale":
+		cmds := []Runner{
+			scalecmd.NewScaleCMD(),
 		}
 
 		for _, cmd := range cmds {
