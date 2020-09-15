@@ -152,7 +152,7 @@ func StopTask(cluster, service, region string) error {
 
 		input := &ecs.StopTaskInput{
 			Cluster: aws.String(cluster),
-			Reason:  aws.String("Stopped by ecsx."),
+			Reason:  aws.String("Stopped by ecsw."),
 			Task:    aws.String(*arn),
 		}
 
