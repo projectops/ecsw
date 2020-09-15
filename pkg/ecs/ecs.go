@@ -1,6 +1,7 @@
 package ecs
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -129,4 +130,39 @@ func GetServices(cluster, region string) []Services {
 	}
 
 	return services
+}
+
+// StopTask - stop running task of an service
+func StopTask(cluster, service, region string) error {
+	tasks, err := listTasks(cluster, service, region)
+	if err != nil {
+		return err
+	}
+
+	arns := tasks.TaskArns
+	total := len(arns)
+
+	for i, arn := range arns {
+
+		svc, err := auth(region)
+		if err != nil {
+			log.Printf("Auth Problem: %s\n", err)
+			return err
+		}
+
+		input := &ecs.StopTaskInput{
+			Cluster: aws.String(cluster),
+			Reason:  aws.String("Stopped by ecsx."),
+			Task:    aws.String(*arn),
+		}
+
+		result, err := svc.StopTask(input)
+		if err != nil {
+			return err
+		}
+
+		fmt.Printf("(%v/%v) Task stopped: %s\n", i+1, total, *result.Task.TaskArn)
+	}
+
+	return nil
 }
