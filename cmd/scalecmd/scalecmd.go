@@ -9,8 +9,8 @@ import (
 	"github.com/projectops/ecsw/pkg/config"
 )
 
-// ScaletCommand - the flagset scale
-type ScaletCommand struct {
+// ScaleCommand - the flagset scale
+type ScaleCommand struct {
 	fs *flag.FlagSet
 
 	service string
@@ -18,8 +18,8 @@ type ScaletCommand struct {
 }
 
 // NewScaleCMD - create the new scale flagset
-func NewScaleCMD() *ScaletCommand {
-	cmd := &ScaletCommand{
+func NewScaleCMD() *ScaleCommand {
+	cmd := &ScaleCommand{
 		fs: flag.NewFlagSet("scale", flag.ContinueOnError),
 	}
 
@@ -30,17 +30,17 @@ func NewScaleCMD() *ScaletCommand {
 }
 
 // Name - return the command name
-func (cmd *ScaletCommand) Name() string {
+func (cmd *ScaleCommand) Name() string {
 	return cmd.fs.Name()
 }
 
 // Init - parse the command and subcommands
-func (cmd *ScaletCommand) Init(args []string) error {
+func (cmd *ScaleCommand) Init(args []string) error {
 	return cmd.fs.Parse(args)
 }
 
 // Run - execute the commands
-func (cmd *ScaletCommand) Run() error {
+func (cmd *ScaleCommand) Run() error {
 	workspace := config.NewConfig()
 
 	cluster := workspace.CurrentWorkspace.Cluster
