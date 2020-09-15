@@ -59,6 +59,18 @@ func Root(args []string) error {
 				return cmd.Run()
 			}
 		}
+
+	case "list":
+		cmds := []Runner{
+			showcmd.NewShowCmd(),
+		}
+
+		for _, cmd := range cmds {
+			if cmd.Name() == subcommand {
+				cmd.Init(os.Args[2:])
+				return cmd.Run()
+			}
+		}
 	default:
 		fmt.Println("Nothing!")
 	}
