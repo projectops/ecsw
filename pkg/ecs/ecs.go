@@ -166,3 +166,35 @@ func StopTask(cluster, service, region string) error {
 
 	return nil
 }
+
+// ScaleTask - update desired tasks
+func ScaleTask(cluster, service, region string, scale int64) error {
+
+	serv, err := descService(cluster, service, region)
+	if err != nil {
+		return err
+	}
+
+	currentlyTasks := *serv.Services[0].DesiredCount
+
+	svc, err := auth(region)
+	if err != nil {
+		log.Printf("Auth Problem: %s\n", err)
+		return err
+	}
+
+	input := &ecs.UpdateServiceInput{
+		Cluster:      aws.String(cluster),
+		DesiredCount: aws.Int64(scale),
+		Service:      aws.String(service),
+	}
+
+	result, err := svc.UpdateService(input)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Changed service: %v - dessired task %v -> %v\n", service, currentlyTasks, *result.Service.DesiredCount)
+
+	return nil
+}
