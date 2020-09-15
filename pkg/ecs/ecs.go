@@ -102,3 +102,31 @@ func descService(cluster, arn, region string) (*ecs.DescribeServicesOutput, erro
 
 	return result, nil
 }
+
+// GetServices - return all services in cluster
+func GetServices(cluster, region string) []Services {
+	var services []Services
+
+	svcs, err := listServices(cluster, region)
+	if err != nil {
+		log.Println(err)
+	}
+
+	for _, arn := range svcs.ServiceArns {
+		result, err := descService(cluster, *arn, region)
+
+		if err != nil {
+			log.Print(err)
+			continue
+		}
+
+		services = append(services, Services{
+			ARN:          *arn,
+			Name:         *result.Services[0].ServiceName,
+			DesiredTasks: *result.Services[0].DesiredCount,
+			RunningTasks: *result.Services[0].RunningCount,
+		})
+	}
+
+	return services
+}
