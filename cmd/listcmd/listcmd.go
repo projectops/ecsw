@@ -8,7 +8,7 @@ import (
 	"github.com/projectops/ecsw/pkg/ecs"
 )
 
-// ListCommand - the flagset init
+// ListCommand - the flagset list
 type ListCommand struct {
 	fs *flag.FlagSet
 
