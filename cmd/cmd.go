@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/projectops/ecsw/cmd/listcmd"
+
 	"github.com/projectops/ecsw/cmd/initcmd"
 	"github.com/projectops/ecsw/cmd/selectcmd"
 	"github.com/projectops/ecsw/cmd/showcmd"
@@ -62,7 +64,7 @@ func Root(args []string) error {
 
 	case "list":
 		cmds := []Runner{
-			showcmd.NewShowCmd(),
+			listcmd.NewListCMD(),
 		}
 
 		for _, cmd := range cmds {
